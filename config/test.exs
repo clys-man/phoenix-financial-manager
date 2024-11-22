@@ -1,5 +1,8 @@
 import Config
 
+# Only in tests, remove the complexity from the password hashing algorithm
+config :bcrypt_elixir, :log_rounds, 1
+
 # Configure your database
 #
 # The MIX_TEST_PARTITION environment variable can be used
@@ -7,8 +10,8 @@ import Config
 # Run `mix help test` for more information.
 config :financial_manager, FinancialManager.Repo,
   username: "postgres",
-  password: "postgres",
-  hostname: "localhost",
+  password: "password",
+  hostname: "postgres",
   database: "financial_manager_test#{System.get_env("MIX_TEST_PARTITION")}",
   pool: Ecto.Adapters.SQL.Sandbox,
   pool_size: System.schedulers_online() * 2
@@ -16,7 +19,7 @@ config :financial_manager, FinancialManager.Repo,
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
 config :financial_manager, FinancialManagerWeb.Endpoint,
-  http: [ip: {127, 0, 0, 1}, port: 4002],
+  http: [ip: {0, 0, 0, 0}, port: 4002],
   secret_key_base: "L54BdBuWxbppZ3sXxjsVTk7pyW3PhCGDgNnUoBd2Rg+tfb2P8UJmrtrd2kr3jM4B",
   server: false
 
