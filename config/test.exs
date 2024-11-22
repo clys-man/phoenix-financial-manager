@@ -11,7 +11,7 @@ config :bcrypt_elixir, :log_rounds, 1
 config :financial_manager, FinancialManager.Repo,
   username: "postgres",
   password: "password",
-  hostname: "postgres",
+  hostname: "localhost",
   database: "financial_manager_test#{System.get_env("MIX_TEST_PARTITION")}",
   pool: Ecto.Adapters.SQL.Sandbox,
   pool_size: System.schedulers_online() * 2
