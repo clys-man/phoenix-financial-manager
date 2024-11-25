@@ -12,47 +12,68 @@
     </script>
   </head>
   <body class="bg-white">
-    <ul class="relative z-10 flex items-center gap-4 px-4 sm:px-6 lg:px-8 justify-end">
-      <%= if @current_user do %>
-        <li class="text-[0.8125rem] leading-6 text-zinc-900">
-          <%= @current_user.email %>
-        </li>
-        <li>
-          <.link
-            href={~p"/users/settings"}
-            class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
-          >
-            Settings
-          </.link>
-        </li>
-        <li>
-          <.link
-            href={~p"/users/log_out"}
-            method="delete"
-            class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
-          >
-            Log out
-          </.link>
-        </li>
-      <% else %>
-        <li>
-          <.link
-            href={~p"/users/register"}
-            class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
-          >
-            Register
-          </.link>
-        </li>
-        <li>
-          <.link
-            href={~p"/users/log_in"}
-            class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
-          >
-            Log in
-          </.link>
-        </li>
-      <% end %>
-    </ul>
-    <%= @inner_content %>
+    <!-- Navbar -->
+    <header class="bg-white shadow">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <nav class="flex items-center justify-between h-16">
+          <!-- Logo -->
+          <div class="flex-shrink-0">
+            <.link href="/" class="text-xl font-bold text-indigo-600 hover:text-indigo-800">
+              FinancialManager
+            </.link>
+          </div>
+          <!-- Navigation Links -->
+          <div>
+            <ul class="flex items-center gap-4">
+              <%= if @current_user do %>
+                <li class="text-sm font-medium text-gray-700">
+                  Welcome, <%= @current_user.email %>
+                </li>
+                <li>
+                  <.link
+                    href={~p"/users/settings"}
+                    class="text-sm font-semibold text-indigo-600 hover:text-indigo-800"
+                  >
+                    Settings
+                  </.link>
+                </li>
+                <li>
+                  <.link
+                    href={~p"/users/log_out"}
+                    method="delete"
+                    class="text-sm font-semibold text-red-600 hover:text-red-800"
+                  >
+                    Log out
+                  </.link>
+                </li>
+              <% else %>
+                <li>
+                  <.link
+                    href={~p"/users/register"}
+                    class="text-sm font-semibold text-indigo-600 hover:text-indigo-800"
+                  >
+                    Register
+                  </.link>
+                </li>
+                <li>
+                  <.link
+                    href={~p"/users/log_in"}
+                    class="text-sm font-semibold text-indigo-600 hover:text-indigo-800"
+                  >
+                    Log in
+                  </.link>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <!-- Main Content -->
+    <main class="py-6">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <%= @inner_content %>
+      </div>
+    </main>
   </body>
 </html>
