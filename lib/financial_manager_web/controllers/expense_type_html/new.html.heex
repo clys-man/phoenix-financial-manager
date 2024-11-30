@@ -1,0 +1,8 @@
+<.header>
+  New Expense type
+  <:subtitle>Use this form to manage expense_type records in your database.</:subtitle>
+</.header>
+
+<.expense_type_form changeset={@changeset} action={~p"/expense_types"} />
+
+<.back navigate={~p"/expense_types"}>Back to expense_types</.back>

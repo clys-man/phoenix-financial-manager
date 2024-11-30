@@ -1,0 +1,15 @@
+<.header>
+  Expense type <%= @expense_type.id %>
+  <:subtitle>This is a expense_type record from your database.</:subtitle>
+  <:actions>
+    <.link href={~p"/expense_types/#{@expense_type}/edit"}>
+      <.button>Edit expense_type</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Name"><%= @expense_type.name %></:item>
+</.list>
+
+<.back navigate={~p"/expense_types"}>Back to expense_types</.back>

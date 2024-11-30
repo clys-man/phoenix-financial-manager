@@ -1,0 +1,23 @@
+<.header>
+  Listing Expense types
+  <:actions>
+    <.link href={~p"/expense_types/new"}>
+      <.button>New Expense type</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table id="expense_types" rows={@expense_types} row_click={&JS.navigate(~p"/expense_types/#{&1}")}>
+  <:col :let={expense_type} label="Name"><%= expense_type.name %></:col>
+  <:action :let={expense_type}>
+    <div class="sr-only">
+      <.link navigate={~p"/expense_types/#{expense_type}"}>Show</.link>
+    </div>
+    <.link navigate={~p"/expense_types/#{expense_type}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={expense_type}>
+    <.link href={~p"/expense_types/#{expense_type}"} method="delete" data-confirm="Are you sure?">
+      Delete
+    </.link>
+  </:action>
+</.table>
