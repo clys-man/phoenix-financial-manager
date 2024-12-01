@@ -1,0 +1,8 @@
+<.header>
+  Edit Income type <%= @income_type.id %>
+  <:subtitle>Use this form to manage income_type records in your database.</:subtitle>
+</.header>
+
+<.income_type_form changeset={@changeset} action={~p"/income_types/#{@income_type}"} />
+
+<.back navigate={~p"/income_types"}>Back to income_types</.back>

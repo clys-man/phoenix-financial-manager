@@ -1,0 +1,23 @@
+<.header>
+  Listing Income types
+  <:actions>
+    <.link href={~p"/income_types/new"}>
+      <.button>New Income type</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table id="income_types" rows={@income_types} row_click={&JS.navigate(~p"/income_types/#{&1}")}>
+  <:col :let={income_type} label="Name"><%= income_type.name %></:col>
+  <:action :let={income_type}>
+    <div class="sr-only">
+      <.link navigate={~p"/income_types/#{income_type}"}>Show</.link>
+    </div>
+    <.link navigate={~p"/income_types/#{income_type}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={income_type}>
+    <.link href={~p"/income_types/#{income_type}"} method="delete" data-confirm="Are you sure?">
+      Delete
+    </.link>
+  </:action>
+</.table>

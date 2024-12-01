@@ -72,6 +72,8 @@ defmodule FinancialManagerWeb.Router do
 
     resources "/expense_types", ExpenseTypeController
     resources "/expenses", ExpenseController
+    resources "/income_types", IncomeTypeController
+    resources "/incomes", IncomeController
   end
 
   scope "/", FinancialManagerWeb do

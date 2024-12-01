@@ -1,0 +1,15 @@
+<.header>
+  Income type <%= @income_type.id %>
+  <:subtitle>This is a income_type record from your database.</:subtitle>
+  <:actions>
+    <.link href={~p"/income_types/#{@income_type}/edit"}>
+      <.button>Edit income_type</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Name"><%= @income_type.name %></:item>
+</.list>
+
+<.back navigate={~p"/income_types"}>Back to income_types</.back>
