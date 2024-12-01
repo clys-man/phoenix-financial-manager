@@ -7,6 +7,31 @@
   </:actions>
 </.header>
 
+<.simple_form :let={f} for={@changeset} action={~p"/expenses"} method="get">
+  <.input
+    field={f[:order]}
+    type="select"
+    label="Order by"
+    options={[{"Highest Amount", "desc"}, {"Lowest Amount", "asc"}]}
+  />
+  <.input
+    field={f[:period]}
+    type="select"
+    label="Period"
+    options={[
+      {"", ""},
+      {"Month", "month"},
+      {"Week", "week"}
+    ]}
+  />
+  <.input field={f[:start_date]} type="date" label="Start Date" />
+  <.input field={f[:end_date]} type="date" label="End Date" />
+
+  <:actions>
+    <.button>Filter</.button>
+  </:actions>
+</.simple_form>
+
 <.table id="expenses" rows={@expenses} row_click={&JS.navigate(~p"/expenses/#{&1}")}>
   <:col :let={expense} label="Description"><%= expense.description %></:col>
   <:col :let={expense} label="Date"><%= expense.date %></:col>

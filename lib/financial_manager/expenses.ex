@@ -4,8 +4,9 @@ defmodule FinancialManager.Expenses do
   """
 
   import Ecto.Query, warn: false
-  alias FinancialManager.Repo
 
+  alias FinancialManager.Expenses.ExpenseFilter
+  alias FinancialManager.Repo
   alias FinancialManager.Expenses.Expense
 
   @doc """
@@ -32,10 +33,37 @@ defmodule FinancialManager.Expenses do
       [%Expense{}, ...]
 
   """
-  def list_expenses(user_id) do
-    Repo.all(from e in Expense, where: e.user_id == ^user_id)
-    |> Repo.preload(:user)
-    |> Repo.preload(:expense_type)
+  def list_expenses(user_id, filter \\ %{}) do
+    base_query =
+      from e in Expense,
+        where: e.user_id == ^user_id
+
+    filter = Map.get(filter, "expense_filter", %{})
+    order = Map.get(filter, "order", "desc")
+    start_date = Map.get(filter, "start_date", nil)
+    end_date = Map.get(filter, "end_date", nil)
+
+    query =
+      if order in ["asc", "desc"] do
+        from e in base_query, order_by: [{^String.to_atom(order), e.amount}]
+      else
+        base_query
+      end
+
+    query =
+      case {start_date, end_date} do
+        {start_date, end_date}
+        when start_date != "" and end_date != "" and not is_nil(start_date) and
+               not is_nil(end_date) ->
+          from e in query,
+            where: e.date >= ^start_date and e.date <= ^end_date
+
+        _ ->
+          query
+      end
+
+    Repo.all(query)
+    |> Repo.preload([:user, :expense_type])
   end
 
   @doc """
@@ -138,5 +166,9 @@ defmodule FinancialManager.Expenses do
   """
   def change_expense(%Expense{} = expense, attrs \\ %{}) do
     Expense.changeset(expense, attrs)
+  end
+
+  def expense_filter(attrs \\ %{}) do
+    ExpenseFilter.changeset(attrs)
   end
 end
