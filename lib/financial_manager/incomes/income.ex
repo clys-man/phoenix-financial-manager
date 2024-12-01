@@ -8,7 +8,7 @@ defmodule FinancialManager.Incomes.Income do
     field :amount, :decimal
 
     belongs_to :user, FinancialManager.Accounts.User
-    belongs_to :income_type, FinancialManager.IncomeTypes.IncomeType
+    belongs_to :income_type, FinancialManager.Incomes.IncomeType
 
     timestamps(type: :utc_datetime)
   end

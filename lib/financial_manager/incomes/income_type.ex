@@ -1,4 +1,4 @@
-defmodule FinancialManager.IncomeTypes.IncomeType do
+defmodule FinancialManager.Incomes.IncomeType do
   use Ecto.Schema
   import Ecto.Changeset
 

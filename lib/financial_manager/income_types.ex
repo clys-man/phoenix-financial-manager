@@ -6,7 +6,7 @@ defmodule FinancialManager.IncomeTypes do
   import Ecto.Query, warn: false
   alias FinancialManager.Repo
 
-  alias FinancialManager.IncomeTypes.IncomeType
+  alias FinancialManager.Incomes.IncomeType
 
   @doc """
   Returns the list of income_types.

@@ -1,7 +1,7 @@
 defmodule FinancialManager.IncomeTypesFixtures do
   @moduledoc """
   This module defines test helpers for creating
-  entities via the `FinancialManager.IncomeTypes` context.
+  entities via the `FinancialManager.Incomes` context.
   """
 
   @doc """

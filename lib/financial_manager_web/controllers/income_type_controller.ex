@@ -1,8 +1,8 @@
 defmodule FinancialManagerWeb.IncomeTypeController do
   use FinancialManagerWeb, :controller
 
+  alias FinancialManager.Incomes.IncomeType
   alias FinancialManager.IncomeTypes
-  alias FinancialManager.IncomeTypes.IncomeType
 
   def index(conn, _params) do
     income_types = IncomeTypes.list_income_types()

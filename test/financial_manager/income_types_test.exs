@@ -1,10 +1,10 @@
 defmodule FinancialManager.IncomeTypesTest do
   use FinancialManager.DataCase
 
-  alias FinancialManager.IncomeTypes
+  alias FinancialManager.Incomes
 
   describe "income_types" do
-    alias FinancialManager.IncomeTypes.IncomeType
+    alias FinancialManager.IncomesIncomeType
 
     import FinancialManager.IncomeTypesFixtures
 
