@@ -6,7 +6,7 @@ defmodule FinancialManager.ExpenseTypes do
   import Ecto.Query, warn: false
   alias FinancialManager.Repo
 
-  alias FinancialManager.ExpenseTypes.ExpenseType
+  alias FinancialManager.Expenses.ExpenseType
 
   @doc """
   Returns the list of expense_types.

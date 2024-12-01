@@ -2,7 +2,7 @@ defmodule FinancialManagerWeb.ExpenseTypeController do
   use FinancialManagerWeb, :controller
 
   alias FinancialManager.ExpenseTypes
-  alias FinancialManager.ExpenseTypes.ExpenseType
+  alias FinancialManager.Expenses.ExpenseType
 
   def index(conn, _params) do
     expense_types = ExpenseTypes.list_expense_types()

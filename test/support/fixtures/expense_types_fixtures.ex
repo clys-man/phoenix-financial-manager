@@ -13,7 +13,7 @@ defmodule FinancialManager.ExpenseTypesFixtures do
       |> Enum.into(%{
         name: "some name"
       })
-      |> FinancialManager.ExpenseTypes.create_expense_type()
+      |> FinancialManager.Expenses.create_expense_type()
 
     expense_type
   end

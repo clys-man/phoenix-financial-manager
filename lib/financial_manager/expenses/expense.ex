@@ -8,7 +8,7 @@ defmodule FinancialManager.Expenses.Expense do
     field :amount, :decimal
 
     belongs_to :user, FinancialManager.Accounts.User
-    belongs_to :expense_type, FinancialManager.ExpenseTypes.ExpenseType
+    belongs_to :expense_type, FinancialManager.Expenses.ExpenseType
 
     timestamps(type: :utc_datetime)
   end

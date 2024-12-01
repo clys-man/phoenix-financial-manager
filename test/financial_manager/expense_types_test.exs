@@ -4,7 +4,7 @@ defmodule FinancialManager.ExpenseTypesTest do
   alias FinancialManager.ExpenseTypes
 
   describe "expense_types" do
-    alias FinancialManager.ExpenseTypes.ExpenseType
+    alias FinancialManager.Expenses.ExpenseType
 
     import FinancialManager.ExpenseTypesFixtures
 

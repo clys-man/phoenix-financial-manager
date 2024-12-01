@@ -1,4 +1,4 @@
-defmodule FinancialManager.ExpenseTypes.ExpenseType do
+defmodule FinancialManager.Expenses.ExpenseType do
   use Ecto.Schema
   import Ecto.Changeset
 
