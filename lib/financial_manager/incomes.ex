@@ -4,6 +4,7 @@ defmodule FinancialManager.Incomes do
   """
 
   import Ecto.Query, warn: false
+  alias FinancialManager.Incomes.IncomeFilter
   alias FinancialManager.Repo
 
   alias FinancialManager.Incomes.Income
@@ -30,8 +31,36 @@ defmodule FinancialManager.Incomes do
       [%Income{}, ...]
 
   """
-  def list_incomes(user_id) do
-    Repo.all(from i in Income, where: i.user_id == ^user_id)
+  def list_incomes(user_id, filter \\ %{}) do
+    base_query =
+      from i in Income,
+        where: i.user_id == ^user_id
+
+    filter = Map.get(filter, "income_filter", %{})
+    order = Map.get(filter, "order", "desc")
+    start_date = Map.get(filter, "start_date", nil)
+    end_date = Map.get(filter, "end_date", nil)
+
+    query =
+      if order in ["asc", "desc"] do
+        from i in base_query, order_by: [{^String.to_atom(order), i.amount}]
+      else
+        base_query
+      end
+
+    query =
+      case {start_date, end_date} do
+        {start_date, end_date}
+        when start_date != "" and end_date != "" and not is_nil(start_date) and
+               not is_nil(end_date) ->
+          from i in query,
+            where: i.date >= ^start_date and i.date <= ^end_date
+
+        _ ->
+          query
+      end
+
+    Repo.all(query)
     |> Repo.preload([:user, :income_type])
   end
 
@@ -134,5 +163,9 @@ defmodule FinancialManager.Incomes do
   """
   def change_income(%Income{} = income, attrs \\ %{}) do
     Income.changeset(income, attrs)
+  end
+
+  def income_filter(attrs \\ %{}) do
+    IncomeFilter.changeset(attrs)
   end
 end
