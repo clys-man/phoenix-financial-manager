@@ -21,9 +21,67 @@ import "phoenix_html"
 import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
+import Chart from 'chart.js/auto';
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 let liveSocket = new LiveSocket("/live", Socket, {
+    hooks: {
+        ChartJS:  {
+            dataset() { 
+                return JSON.parse(this.el.dataset.points); 
+            },
+            mounted() {
+                const ctx = this.el;
+                const transactionsByDay = this.dataset();
+                const labels = transactionsByDay.map((t) => t.date);
+                const incomes = transactionsByDay.map((t) => t.income);
+                const expenses = transactionsByDay.map((t) => t.expense);
+                const chart = new Chart(ctx, {
+                type: "bar",
+                data: {
+                    labels: labels,
+                    datasets: [
+                    {
+                        label: "Income",
+                        data: incomes,
+                        backgroundColor: "#4CAF50",
+                    },
+                    {
+                        label: "Expense",
+                        data: expenses,
+                        backgroundColor: "#F44336",
+                    },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                    legend: {
+                        position: "top",
+                    },
+                    },
+                    scales: {
+                    x: {
+                        title: {
+                        display: true,
+                        text: "Date",
+                        },
+                    },
+                    y: {
+                        title: {
+                        display: true,
+                        text: "Amount (USD)",
+                        },
+                    },
+                    },
+                },
+                });
+            },
+            updated() {
+                console.log(this.el)
+            }
+        }
+    },
   longPollFallbackMs: 2500,
   params: {_csrf_token: csrfToken}
 })

@@ -68,8 +68,10 @@ defmodule FinancialManagerWeb.Router do
       on_mount: [{FinancialManagerWeb.UserAuth, :ensure_authenticated}] do
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
+      live "/dashboard", DashboardLive.Index, :index
     end
 
+    # get "/dashboard", DashboardController, :index
     resources "/expense_types", ExpenseTypeController
     resources "/expenses", ExpenseController
     resources "/income_types", IncomeTypeController
