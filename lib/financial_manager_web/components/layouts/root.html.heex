@@ -23,6 +23,53 @@
             </.link>
           </div>
           <!-- Navigation Links -->
+          <div class="flex items-center gap-6">
+            <%= if @current_user do %>
+              <ul class="flex items-center gap-4">
+                <li>
+                  <.link
+                    href={~p"/dashboard"}
+                    class="text-sm font-semibold text-indigo-600 hover:text-indigo-800"
+                  >
+                    Dashboard
+                  </.link>
+                </li>
+                <li>
+                  <.link
+                    href={~p"/incomes"}
+                    class="text-sm font-semibold text-indigo-600 hover:text-indigo-800"
+                  >
+                    Incomes
+                  </.link>
+                </li>
+                <li>
+                  <.link
+                    href={~p"/expenses"}
+                    class="text-sm font-semibold text-indigo-600 hover:text-indigo-800"
+                  >
+                    Expenses
+                  </.link>
+                </li>
+                <li>
+                  <.link
+                    href={~p"/income_types"}
+                    class="text-sm font-semibold text-indigo-600 hover:text-indigo-800"
+                  >
+                    Income Types
+                  </.link>
+                </li>
+                <li>
+                  <.link
+                    href={~p"/expense_types"}
+                    class="text-sm font-semibold text-indigo-600 hover:text-indigo-800"
+                  >
+                    Expense Types
+                  </.link>
+                </li>
+              </ul>
+            <% end %>
+          </div>
+          <!-- User Links -->
           <div>
             <ul class="flex items-center gap-4">
               <%= if @current_user do %>
@@ -70,10 +117,9 @@
       </div>
     </header>
     <!-- Main Content -->
-    <main class="py-6">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <%= @inner_content %>
-      </div>
+    <main>
+      <%= @inner_content %>
     </main>
   </body>
 </html>
+
