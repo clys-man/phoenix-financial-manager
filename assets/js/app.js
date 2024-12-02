@@ -37,45 +37,46 @@ let liveSocket = new LiveSocket("/live", Socket, {
                 const incomes = transactionsByDay.map((t) => t.income);
                 const expenses = transactionsByDay.map((t) => t.expense);
                 const chart = new Chart(ctx, {
-                type: "bar",
-                data: {
-                    labels: labels,
-                    datasets: [
-                    {
-                        label: "Income",
-                        data: incomes,
-                        backgroundColor: "#4CAF50",
+                    type: "bar",
+                    data: {
+                        labels: labels,
+                        datasets: [
+                        {
+                            label: "Income",
+                            data: incomes,
+                            backgroundColor: "#4CAF50",
+                        },
+                        {
+                            label: "Expense",
+                            data: expenses,
+                            backgroundColor: "#F44336",
+                        },
+                        ],
                     },
-                    {
-                        label: "Expense",
-                        data: expenses,
-                        backgroundColor: "#F44336",
-                    },
-                    ],
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                    legend: {
-                        position: "top",
-                    },
-                    },
-                    scales: {
-                    x: {
-                        title: {
-                        display: true,
-                        text: "Date",
+                    options: {
+                        responsive: true,
+                        plugins: {
+                        legend: {
+                            position: "top",
+                        },
+                        },
+                        scales: {
+                        x: {
+                            title: {
+                            display: true,
+                            text: "Date",
+                            },
+                        },
+                        y: {
+                            title: {
+                            display: true,
+                            text: "Amount (USD)",
+                            },
+                        },
                         },
                     },
-                    y: {
-                        title: {
-                        display: true,
-                        text: "Amount (USD)",
-                        },
-                    },
-                    },
-                },
-                });
+                    }
+                );
             },
             updated() {
                 console.log(this.el)
