@@ -17,11 +17,11 @@ defmodule FinancialManagerWeb.DashboardLive.Index do
         t in fragment(
           """
           (
-            SELECT i.date date, 'income' type, i.amount amount
+            SELECT i.id id, i.description description, i.date date, 'income' type, i.amount amount
             FROM incomes i
             WHERE i.user_id = ? AND i.date >= ? AND i.date <= ?
             UNION ALL
-            SELECT e.date date, 'expense' type, e.amount amount
+            SELECT e.id id, e.description description, e.date date, 'expense' type, e.amount amount
             FROM expenses e
             WHERE e.user_id = ? AND e.date >= ? AND e.date <= ?
           )
@@ -34,29 +34,16 @@ defmodule FinancialManagerWeb.DashboardLive.Index do
           ^current_month_end
         ),
         order_by: [desc: t.date],
-        select: %{date: t.date, type: t.type, amount: t.amount}
+        select: %{
+          id: t.id,
+          description: t.description,
+          date: t.date,
+          type: t.type,
+          amount: t.amount
+        }
       )
 
     transactions = Repo.all(transactions_query)
-
-    IO.inspect(transactions)
-
-    transactions_by_day =
-      transactions
-      |> Enum.group_by(& &1.date)
-      |> Enum.map(fn {date, trans} ->
-        income =
-          trans
-          |> Enum.filter(&(&1.type == "income"))
-          |> Enum.reduce(Decimal.new(0), fn t, acc -> Decimal.add(acc, t.amount) end)
-
-        expense =
-          trans
-          |> Enum.filter(&(&1.type == "expense"))
-          |> Enum.reduce(Decimal.new(0), fn t, acc -> Decimal.add(acc, t.amount) end)
-
-        %{date: date, income: income, expense: expense}
-      end)
 
     total_incomes =
       transactions
@@ -71,13 +58,20 @@ defmodule FinancialManagerWeb.DashboardLive.Index do
     balance = Decimal.sub(total_incomes, total_expenses)
 
     chart_data =
-      transactions_by_day
-      |> Enum.map(fn %{date: date, income: income, expense: expense} ->
-        %{
-          date: date,
-          income: Decimal.to_float(income),
-          expense: Decimal.to_float(expense)
-        }
+      transactions
+      |> Enum.group_by(& &1.date)
+      |> Enum.map(fn {date, trans} ->
+        income =
+          trans
+          |> Enum.filter(&(&1.type == "income"))
+          |> Enum.reduce(Decimal.new(0), fn t, acc -> Decimal.add(acc, t.amount) end)
+
+        expense =
+          trans
+          |> Enum.filter(&(&1.type == "expense"))
+          |> Enum.reduce(Decimal.new(0), fn t, acc -> Decimal.add(acc, t.amount) end)
+
+        %{date: date, income: Decimal.to_float(income), expense: Decimal.to_float(expense)}
       end)
 
     socket =
@@ -90,11 +84,6 @@ defmodule FinancialManagerWeb.DashboardLive.Index do
       )
 
     {:ok, socket}
-  end
-
-  @impl true
-  def handle_params(_params, _url, socket) do
-    {:noreply, socket}
   end
 
   @impl true
@@ -123,7 +112,22 @@ defmodule FinancialManagerWeb.DashboardLive.Index do
     </div>
 
     <h2 class="text-xl font-bold mt-8 mb-4">Transactions</h2>
-    <.table id="transactions" rows={@transactions} row_click={nil}>
+    <.table
+      id="transactions"
+      rows={@transactions}
+      row_click={
+        fn transaction ->
+          if transaction.type == "income" do
+            JS.navigate(~p"/incomes/#{transaction.id}")
+          else
+            JS.navigate(~p"/expenses/#{transaction.id}")
+          end
+        end
+      }
+    >
+      <:col :let={transaction} label="Description">
+        <%= transaction.description %>
+      </:col>
       <:col :let={transaction} label="Date">
         <%= transaction.date %>
       </:col>
@@ -137,3 +141,4 @@ defmodule FinancialManagerWeb.DashboardLive.Index do
     """
   end
 end
+

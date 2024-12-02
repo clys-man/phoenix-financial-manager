@@ -44,7 +44,7 @@ let liveSocket = new LiveSocket("/live", Socket, {
                         {
                             label: "Income",
                             data: incomes,
-                            backgroundColor: "#4CAF50",
+                            backgroundColor: "#4f46e5",
                         },
                         {
                             label: "Expense",
