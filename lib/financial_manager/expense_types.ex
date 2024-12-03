@@ -18,7 +18,20 @@ defmodule FinancialManager.ExpenseTypes do
 
   """
   def list_expense_types do
-    Repo.all(ExpenseType)
+    Repo.all(ExpenseType) |> Repo.preload(:user)
+  end
+
+  @doc """
+  Returns the list of expense_types by user.
+
+  ## Examples
+
+      iex> list_expense_types(1)
+      [%ExpenseType{}, ...]
+
+  """
+  def list_expense_types(user_id) do
+    Repo.all(from et in ExpenseType, where: et.user_id == ^user_id) |> Repo.preload(:user)
   end
 
   @doc """
@@ -35,7 +48,26 @@ defmodule FinancialManager.ExpenseTypes do
       ** (Ecto.NoResultsError)
 
   """
-  def get_expense_type!(id), do: Repo.get!(ExpenseType, id)
+  def get_expense_type!(id), do: Repo.get!(ExpenseType, id) |> Repo.preload(:user)
+
+  @doc """
+  Gets a single expense_type by user.
+
+  Raises `Ecto.NoResultsError` if the Expense type does not exist.
+
+  ## Examples
+
+      iex> get_expense_type!(123, 1)
+      %ExpenseType{}
+
+      iex> get_expense_type!(456, 2)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_expense_type!(id, user_id) do
+    Repo.get_by(ExpenseType, id: id, user_id: user_id)
+    |> Repo.preload(:user)
+  end
 
   @doc """
   Creates a expense_type.

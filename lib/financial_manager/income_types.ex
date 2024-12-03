@@ -22,6 +22,19 @@ defmodule FinancialManager.IncomeTypes do
   end
 
   @doc """
+  Returns the list of income_types by user.
+
+  ## Examples
+
+      iex> list_income_types(1)
+      [%IncomeType{}, ...]
+
+  """
+  def list_income_types(user_id) do
+    Repo.all(from it in IncomeType, where: it.user_id == ^user_id) |> Repo.preload(:user)
+  end
+
+  @doc """
   Gets a single income_type.
 
   Raises `Ecto.NoResultsError` if the Income type does not exist.
@@ -35,7 +48,26 @@ defmodule FinancialManager.IncomeTypes do
       ** (Ecto.NoResultsError)
 
   """
-  def get_income_type!(id), do: Repo.get!(IncomeType, id)
+  def get_income_type!(id), do: Repo.get!(IncomeType, id) |> Repo.preload(:user)
+
+  @doc """
+  Gets a single income_type.
+
+  Raises `Ecto.NoResultsError` if the Income type does not exist.
+
+  ## Examples
+
+      iex> get_income_type!(123)
+      %IncomeType{}
+
+      iex> get_income_type!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_income_type!(id, user_id),
+    do:
+      Repo.get_by(IncomeType, id: id, user_id: user_id)
+      |> Repo.preload(:user)
 
   @doc """
   Creates a income_type.
