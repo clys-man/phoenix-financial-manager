@@ -47,7 +47,8 @@ defmodule FinancialManagerWeb.IncomeController do
   end
 
   def create(conn, %{"income" => income_params}) do
-    income_params = Map.put(income_params, "user_id", conn.assigns.current_user.id)
+    user_id = conn.assigns.current_user.id
+    income_params = Map.put(income_params, "user_id", user_id)
 
     case Incomes.create_income(income_params) do
       {:ok, income} ->
@@ -56,7 +57,10 @@ defmodule FinancialManagerWeb.IncomeController do
         |> redirect(to: ~p"/incomes/#{income}")
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, :new, changeset: changeset)
+        render(conn, :new,
+          changeset: changeset,
+          income_types: IncomeTypes.list_income_types(user_id) |> Enum.map(&{&1.name, &1.id})
+        )
     end
   end
 
@@ -86,7 +90,11 @@ defmodule FinancialManagerWeb.IncomeController do
         |> redirect(to: ~p"/incomes/#{income}")
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, :edit, income: income, changeset: changeset)
+        render(conn, :edit,
+          income: income,
+          changeset: changeset,
+          income_types: IncomeTypes.list_income_types(user_id) |> Enum.map(&{&1.name, &1.id})
+        )
     end
   end
 

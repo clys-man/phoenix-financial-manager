@@ -47,7 +47,8 @@ defmodule FinancialManagerWeb.ExpenseController do
   end
 
   def create(conn, %{"expense" => expense_params}) do
-    expense_params = Map.put(expense_params, "user_id", conn.assigns.current_user.id)
+    user_id = conn.assigns.current_user.id
+    expense_params = Map.put(expense_params, "user_id", user_id)
 
     case Expenses.create_expense(expense_params) do
       {:ok, expense} ->
@@ -56,7 +57,10 @@ defmodule FinancialManagerWeb.ExpenseController do
         |> redirect(to: ~p"/expenses/#{expense}")
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, :new, changeset: changeset)
+        render(conn, :new,
+          changeset: changeset,
+          expense_types: ExpenseTypes.list_expense_types(user_id) |> Enum.map(&{&1.name, &1.id})
+        )
     end
   end
 
@@ -86,7 +90,11 @@ defmodule FinancialManagerWeb.ExpenseController do
         |> redirect(to: ~p"/expenses/#{expense}")
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, :edit, expense: expense, changeset: changeset)
+        render(conn, :edit,
+          expense: expense,
+          changeset: changeset,
+          expense_types: ExpenseTypes.list_expense_types(user_id) |> Enum.map(&{&1.name, &1.id})
+        )
     end
   end
 

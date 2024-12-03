@@ -8,7 +8,7 @@ defmodule FinancialManagerWeb.IncomeHTML do
   """
   attr :changeset, Ecto.Changeset, required: true
   attr :action, :string, required: true
-  attr :income_types, :string, required: true
+  attr :income_types, :list, required: false
   attr :income, FinancialManager.Incomes.Income, required: false
 
   def income_form(assigns)
