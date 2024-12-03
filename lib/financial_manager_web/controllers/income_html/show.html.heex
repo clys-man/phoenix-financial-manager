@@ -12,6 +12,7 @@
   <:item title="Description"><%= @income.description %></:item>
   <:item title="Date"><%= @income.date %></:item>
   <:item title="Amount"><%= @income.amount %></:item>
+  <:item title="Income Type"><%= @income.income_type.name %></:item>
 </.list>
 
 <.back navigate={~p"/incomes"}>Back to incomes</.back>
