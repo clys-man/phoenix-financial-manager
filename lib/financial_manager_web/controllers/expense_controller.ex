@@ -40,8 +40,9 @@ defmodule FinancialManagerWeb.ExpenseController do
   end
 
   def new(conn, _params) do
+    user_id = conn.assigns.current_user.id
     changeset = Expenses.change_expense(%Expense{})
-    expense_types = ExpenseTypes.list_expense_types() |> Enum.map(&{&1.name, &1.id})
+    expense_types = ExpenseTypes.list_expense_types(user_id) |> Enum.map(&{&1.name, &1.id})
     render(conn, :new, changeset: changeset, expense_types: expense_types)
   end
 
@@ -69,7 +70,7 @@ defmodule FinancialManagerWeb.ExpenseController do
     user_id = conn.assigns.current_user.id
     expense = Expenses.get_expense!(id, user_id)
     changeset = Expenses.change_expense(expense)
-    expense_types = ExpenseTypes.list_expense_types() |> Enum.map(&{&1.name, &1.id})
+    expense_types = ExpenseTypes.list_expense_types(user_id) |> Enum.map(&{&1.name, &1.id})
     render(conn, :edit, expense: expense, changeset: changeset, expense_types: expense_types)
   end
 

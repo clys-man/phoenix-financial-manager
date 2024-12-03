@@ -40,8 +40,9 @@ defmodule FinancialManagerWeb.IncomeController do
   end
 
   def new(conn, _params) do
+    user_id = conn.assigns.current_user.id
     changeset = Incomes.change_income(%Income{})
-    income_types = IncomeTypes.list_income_types() |> Enum.map(&{&1.name, &1.id})
+    income_types = IncomeTypes.list_income_types(user_id) |> Enum.map(&{&1.name, &1.id})
     render(conn, :new, changeset: changeset, income_types: income_types)
   end
 
@@ -69,7 +70,7 @@ defmodule FinancialManagerWeb.IncomeController do
     user_id = conn.assigns.current_user.id
     income = Incomes.get_income!(id, user_id)
     changeset = Incomes.change_income(income)
-    income_types = IncomeTypes.list_income_types() |> Enum.map(&{&1.name, &1.id})
+    income_types = IncomeTypes.list_income_types(user_id) |> Enum.map(&{&1.name, &1.id})
     render(conn, :edit, income: income, changeset: changeset, income_types: income_types)
   end
 
