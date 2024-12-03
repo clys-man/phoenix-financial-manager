@@ -78,7 +78,7 @@ defmodule FinancialManager.Incomes do
       ** (Ecto.NoResultsError)
 
   """
-  def get_income!(id), do: Repo.get!(Income, id) |> Repo.preload([:user, :inconme_type])
+  def get_income!(id), do: Repo.get!(Income, id) |> Repo.preload([:user, :income_type])
 
   @doc """
   Gets a single income.
